@@ -1,0 +1,467 @@
+import React, { useState } from 'react';
+import { Plus, Trash2, Save, Eye, Image as ImageIcon, X, Copy } from 'lucide-react';
+
+export default function ProductAdminTemplate() {
+  const [productData, setProductData] = useState({
+    name: 'Galaxy Ultra Pro Max',
+    category: 'Smartphone',
+    shortDescription: 'Latest flagship smartphone with cutting-edge technology',
+    basePrice: 999,
+    discountPrice: 200,
+    inStock: true,
+    stockCount: 8,
+    brand: 'TechBrand',
+    sku: 'GUPM-001',
+    warranty: '2 years',
+    rating: 4.8,
+    reviewCount: 2847
+  });
+
+  const [images, setImages] = useState([
+    'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1592286927505-b0527596d3b7?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1603891219914-d7d7e5c0c321?w=800&h=800&fit=crop',
+    'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=800&h=800&fit=crop'
+  ]);
+
+  const [variants, setVariants] = useState([
+    { id: 1, name: '128GB', price: 999, available: true },
+    { id: 2, name: '256GB', price: 1099, available: true },
+    { id: 3, name: '512GB', price: 1299, available: true },
+    { id: 4, name: '1TB', price: 1499, available: false }
+  ]);
+
+  const [colors, setColors] = useState([
+    { id: 1, name: 'midnight', hex: '#1a1a2e', label: 'Midnight Black' },
+    { id: 2, name: 'silver', hex: '#c0c0c0', label: 'Silver' },
+    { id: 3, name: 'blue', hex: '#4a5fd6', label: 'Pacific Blue' },
+    { id: 4, name: 'purple', hex: '#a855f7', label: 'Deep Purple' }
+  ]);
+
+  const [specs, setSpecs] = useState([
+    { id: 1, key: 'Display', value: '6.7" AMOLED Display' },
+    { id: 2, key: 'Processor', value: 'Snapdragon 8 Gen 3' },
+    { id: 3, key: 'RAM', value: '12GB RAM' },
+    { id: 4, key: 'Battery', value: '5000mAh' },
+    { id: 5, key: 'Camera', value: '200MP Main Camera' },
+    { id: 6, key: 'Charging', value: '65W Fast Charging' },
+    { id: 7, key: 'OS', value: 'Android 14' },
+    { id: 8, key: 'Weight', value: '195g' }
+  ]);
+
+  const [features, setFeatures] = useState([
+    { id: 1, title: '5G Connectivity', description: 'Ultra-fast network speeds', icon: 'Zap' },
+    { id: 2, title: 'WiFi 6E', description: 'Next-gen wireless', icon: 'Wifi' },
+    { id: 3, title: 'All-Day Battery', description: 'Up to 24 hours', icon: 'Battery' },
+    { id: 4, title: 'IP68 Rated', description: 'Water & dust resistant', icon: 'Shield' }
+  ]);
+
+  const [keyFeatures, setKeyFeatures] = useState([
+    '200MP main camera with OIS and 8K video recording',
+    '5000mAh battery with 65W fast charging and wireless charging',
+    'IP68 water and dust resistance',
+    'In-display ultrasonic fingerprint sensor',
+    'Stereo speakers tuned by AKG',
+    'S Pen support for enhanced productivity',
+    'One UI 6.0 based on Android 14',
+    '5 years of security updates guaranteed'
+  ]);
+
+  const [description, setDescription] = useState(
+    'Experience the pinnacle of smartphone innovation with the Galaxy Ultra Pro Max. Engineered with cutting-edge technology and premium materials, this flagship device delivers unparalleled performance, stunning photography capabilities, and all-day battery life.\n\nThe brilliant 6.7-inch AMOLED display with 120Hz refresh rate provides smooth scrolling and vibrant colors. Powered by the latest Snapdragon 8 Gen 3 processor and 12GB of RAM, multitasking and gaming reach new heights of performance.\n\nCapture professional-quality photos with the revolutionary 200MP main camera system. Advanced AI photography features, 8K video recording, and enhanced night mode ensure you never miss a moment, regardless of lighting conditions.'
+  );
+
+  const [boxContents, setBoxContents] = useState([
+    'Galaxy Ultra Pro Max smartphone',
+    'USB-C to USB-C cable',
+    'SIM ejector tool',
+    'Quick start guide',
+    'Warranty card'
+  ]);
+
+  const [badges, setBadges] = useState([
+    { id: 1, text: 'Flagship', color: 'blue' },
+    { id: 2, text: 'In Stock', color: 'green' },
+    { id: 3, text: '5G', color: 'purple' }
+  ]);
+
+  const [showPreview, setShowPreview] = useState(false);
+
+  // Helper functions
+  const addVariant = () => {
+    const newId = Math.max(...variants.map(v => v.id), 0) + 1;
+    setVariants([...variants, { id: newId, name: '', price: 0, available: true }]);
+  };
+
+  const removeVariant = (id) => {
+    setVariants(variants.filter(v => v.id !== id));
+  };
+
+  const updateVariant = (id, field, value) => {
+    setVariants(variants.map(v => v.id === id ? { ...v, [field]: value } : v));
+  };
+
+  const addColor = () => {
+    const newId = Math.max(...colors.map(c => c.id), 0) + 1;
+    setColors([...colors, { id: newId, name: '', hex: '#000000', label: '' }]);
+  };
+
+  const removeColor = (id) => {
+    setColors(colors.filter(c => c.id !== id));
+  };
+
+  const updateColor = (id, field, value) => {
+    setColors(colors.map(c => c.id === id ? { ...c, [field]: value } : c));
+  };
+
+  const addSpec = () => {
+    const newId = Math.max(...specs.map(s => s.id), 0) + 1;
+    setSpecs([...specs, { id: newId, key: '', value: '' }]);
+  };
+
+  const removeSpec = (id) => {
+    setSpecs(specs.filter(s => s.id !== id));
+  };
+
+  const updateSpec = (id, field, value) => {
+    setSpecs(specs.map(s => s.id === id ? { ...s, [field]: value } : s));
+  };
+
+  const addFeature = () => {
+    const newId = Math.max(...features.map(f => f.id), 0) + 1;
+    setFeatures([...features, { id: newId, title: '', description: '', icon: 'Zap' }]);
+  };
+
+  const removeFeature = (id) => {
+    setFeatures(features.filter(f => f.id !== id));
+  };
+
+  const updateFeature = (id, field, value) => {
+    setFeatures(features.map(f => f.id === id ? { ...f, [field]: value } : f));
+  };
+
+  const addKeyFeature = () => {
+    setKeyFeatures([...keyFeatures, '']);
+  };
+
+  const removeKeyFeature = (index) => {
+    setKeyFeatures(keyFeatures.filter((_, i) => i !== index));
+  };
+
+  const updateKeyFeature = (index, value) => {
+    setKeyFeatures(keyFeatures.map((f, i) => i === index ? value : f));
+  };
+
+  const addBoxContent = () => {
+    setBoxContents([...boxContents, '']);
+  };
+
+  const removeBoxContent = (index) => {
+    setBoxContents(boxContents.filter((_, i) => i !== index));
+  };
+
+  const updateBoxContent = (index, value) => {
+    setBoxContents(boxContents.map((c, i) => i === index ? value : c));
+  };
+
+  const addImage = () => {
+    setImages([...images, '']);
+  };
+
+  const removeImage = (index) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
+  const updateImage = (index, value) => {
+    setImages(images.map((img, i) => i === index ? value : img));
+  };
+
+  const addBadge = () => {
+    const newId = Math.max(...badges.map(b => b.id), 0) + 1;
+    setBadges([...badges, { id: newId, text: '', color: 'blue' }]);
+  };
+
+  const removeBadge = (id) => {
+    setBadges(badges.filter(b => b.id !== id));
+  };
+
+  const updateBadge = (id, field, value) => {
+    setBadges(badges.map(b => b.id === id ? { ...b, [field]: value } : b));
+  };
+
+  const generateJSON = () => {
+    const output = {
+      productData,
+      images,
+      variants,
+      colors,
+      specs,
+      features,
+      keyFeatures,
+      description,
+      boxContents,
+      badges
+    };
+    return JSON.stringify(output, null, 2);
+  };
+
+  const copyJSON = () => {
+    navigator.clipboard.writeText(generateJSON());
+    alert('Product data copied to clipboard!');
+  };
+
+  const handleSave = () => {
+    console.log('Product saved:', generateJSON());
+    alert('Product saved successfully!');
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Product Management</h1>
+            <p className="text-sm text-gray-600">Add or edit product details</p>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={copyJSON}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              <Copy className="w-5 h-5" />
+              <span className="hidden sm:inline">Copy JSON</span>
+            </button>
+            <button
+              onClick={() => setShowPreview(!showPreview)}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Eye className="w-5 h-5" />
+              <span className="hidden sm:inline">Preview</span>
+            </button>
+            <button
+              onClick={handleSave}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <Save className="w-5 h-5" />
+              <span className="hidden sm:inline">Save</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Basic Information */}
+        <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+            📋 Basic Information
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+              <input
+                type="text"
+                value={productData.name}
+                onChange={(e) => setProductData({...productData, name: e.target.value})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <input
+                type="text"
+                value={productData.category}
+                onChange={(e) => setProductData({...productData, category: e.target.value})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Brand</label>
+              <input
+                type="text"
+                value={productData.brand}
+                onChange={(e) => setProductData({...productData, brand: e.target.value})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">SKU</label>
+              <input
+                type="text"
+                value={productData.sku}
+                onChange={(e) => setProductData({...productData, sku: e.target.value})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
+              <input
+                type="text"
+                value={productData.shortDescription}
+                onChange={(e) => setProductData({...productData, shortDescription: e.target.value})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing & Stock */}
+        <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+            💰 Pricing & Stock
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Base Price ($)</label>
+              <input
+                type="number"
+                value={productData.basePrice}
+                onChange={(e) => setProductData({...productData, basePrice: parseInt(e.target.value)})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Discount ($)</label>
+              <input
+                type="number"
+                value={productData.discountPrice}
+                onChange={(e) => setProductData({...productData, discountPrice: parseInt(e.target.value)})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Stock Count</label>
+              <input
+                type="number"
+                value={productData.stockCount}
+                onChange={(e) => setProductData({...productData, stockCount: parseInt(e.target.value)})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">In Stock</label>
+              <select
+                value={productData.inStock.toString()}
+                onChange={(e) => setProductData({...productData, inStock: e.target.value === 'true'})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+              <input
+                type="number"
+                step="0.1"
+                max="5"
+                value={productData.rating}
+                onChange={(e) => setProductData({...productData, rating: parseFloat(e.target.value)})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Review Count</label>
+              <input
+                type="number"
+                value={productData.reviewCount}
+                onChange={(e) => setProductData({...productData, reviewCount: parseInt(e.target.value)})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Warranty</label>
+              <input
+                type="text"
+                value={productData.warranty}
+                onChange={(e) => setProductData({...productData, warranty: e.target.value})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Badges */}
+        <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold flex items-center gap-2">🏷️ Badges</h2>
+            <button onClick={addBadge} className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+              <Plus className="w-4 h-4" /> Add Badge
+            </button>
+          </div>
+          <div className="space-y-3">
+            {badges.map((badge) => (
+              <div key={badge.id} className="flex gap-3 items-center">
+                <input
+                  type="text"
+                  value={badge.text}
+                  onChange={(e) => updateBadge(badge.id, 'text', e.target.value)}
+                  placeholder="Badge text"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <select
+                  value={badge.color}
+                  onChange={(e) => updateBadge(badge.id, 'color', e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="blue">Blue</option>
+                  <option value="green">Green</option>
+                  <option value="purple">Purple</option>
+                  <option value="red">Red</option>
+                  <option value="yellow">Yellow</option>
+                </select>
+                <button onClick={() => removeBadge(badge.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Images */}
+        <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <ImageIcon className="w-6 h-6" /> Product Images
+            </h2>
+            <button onClick={addImage} className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+              <Plus className="w-4 h-4" /> Add Image
+            </button>
+          </div>
+          <div className="space-y-3">
+            {images.map((img, index) => (
+              <div key={index} className="flex gap-3 items-center">
+                <span className="text-sm font-medium text-gray-600 w-8">{index + 1}.</span>
+                <input
+                  type="text"
+                  value={img}
+                  onChange={(e) => updateImage(index, e.target.value)}
+                  placeholder="Image URL"
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                {img && (
+                  <img src={img} alt={`Preview ${index + 1}`} className="w-12 h-12 object-cover rounded" />
+                )}
+                <button onClick={() => removeImage(index)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Variants */}
+        <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold flex items-center gap-2">📦 Variants</h2>
+            <button onClick={addVariant} className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+              <Plus className="w-4 h-4" /> Add Variant
+            </button>
+          </div>
+          <div className="space-y-3">
+            {variants.map((variant) => (
+              <div key={variant.id} className="flex gap-3 items-center">
+                <input
+                  type="text"
+                  value={variant.name}
+     
